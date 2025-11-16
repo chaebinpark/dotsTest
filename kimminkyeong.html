@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    
+  /* 헤더 시작*/   
+    header {
+      width: 100%;
+      display: flex;           /* 가로 정렬 */
+      align-items: center;     /* 수직 가운데 */
+      justify-content: space-between;  /* 좌우 균형 */
+    }
+
+    /* 로고+아이콘 그룹 */
+    .header-logo {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    header img {
+      width: 70%; /* 원하는 크기로 조절 */
+      height: auto;
+    }
+/* 헤더 로고 영역 끝 */
+
+
+/* 네비게이션바 시작 */
+
+  /* --- 네비 박스 컨테이너 --- */
+/* --- 네비 박스 컨테이너 --- */
+.navBox {
+  width: 100%;                  /* 전체 너비로 */
+  display: flex;
+  justify-content: flex-end;     /* 아이콘을 오른쪽 끝으로 */
+  align-items: center;
+  position: relative;
+  padding: 1%;
+
+  overflow: hidden;
+  z-index: 1;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  right: 150px;
+  display: flex;
+  gap: 10rem;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+
+  transform: translateY(-50%) translateX(50px); /* 오른쪽에서 살짝 밀린 상태 */
+  opacity: 0;
+  transform-origin: right center;
+  z-index: 1;
+
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease-in-out;
+}
+
+/* --- 메뉴 열렸을 때 --- */
+.navBox.open .nav {
+  transform: translateY(-50%) translateX(0); /* 아이콘 바로 옆으로 이동 */
+  opacity: 1;
+}
+
+/* --- 아이콘 위로 올라가지 않게 --- */
+.navIconBox {
+  display: flex;
+  align-items: center;
+  z-index: 2;                     /* 메뉴보다 위 */
+  margin-right: 2rem; 
+
+}
+
+/* 기본 동그라미 */
+.navIcon {
+  width: 35px;
+  height: 35px;
+  background-color: #F7EDF1; /* 분홍색 */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0px 4px 5px rgba(0,0,0,0.2);
+}
+
+/* 메뉴 열렸을 때: 세로로 압축 → 회색 막대 */
+.navBox.open .navIcon {
+  width: 34px;          /* 가로는 그대로 */
+  height: 4px;          /* 세로가 쭉 줄어들며 막대 */   /* 모서리 둥글게 */
+  background: #D9D9D9;
+  box-shadow: none;
+}
+
+
+/* --- 메뉴 아이템 초기 상태 --- */
+.nav a {
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  font-style: italic;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  opacity: 0;
+  transform: translateX(20px); /* 오른쪽에서 살짝 */
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+/* --- 메뉴 아이템 열릴 때 순차 등장 --- */
+.navBox.open .nav a:nth-child(1) { transition-delay: 0.05s; opacity:1; transform:translateX(0);}
+.navBox.open .nav a:nth-child(2) { transition-delay: 0.10s; opacity:1; transform:translateX(0);}
+.navBox.open .nav a:nth-child(3) { transition-delay: 0.15s; opacity:1; transform:translateX(0);}
+.navBox.open .nav a:nth-child(4) { transition-delay: 0.20s; opacity:1; transform:translateX(0);}
+.navBox.open .nav a:nth-child(5) { transition-delay: 0.25s; opacity:1; transform:translateX(0);}
+
+
+  
+    /* 작품 구역 시작 */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding: 4rem 10rem;   /* ← 양 옆 여백 넓힐 곳 */
+      margin: 0 auto;       /* ← 가운데 정렬 */
+
+    }
+
+    .text-section {
+      padding : 0 4rem 0 0;
+    }
+
+    /* ===== 좌측 텍스트 영역 ===== */
+    .text-section h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .text-section h2 {
+      font-size: 1.1rem;
+      color: #666;
+      margin: 0 0 1rem;
+      font-weight: normal;
+    }
+
+    .text-section .note {
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .contact h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .contact p {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+    }
+
+    /* ===== 우측 작품 영역 ===== */
+    .artwork_main {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .artwork_main img {
+      width: 100%;
+
+    }
+
+    .caption {
+       margin: 0;
+       font-size: 0.8rem;
+       background: none;
+       padding: 0;
+       align-self: flex-end;
+    }
+
+    .artwork_main .caption {
+      text-align: right;
+    }
+
+
+/* ---------- 작품 리스트 (수정본) ---------- */
+.artwork {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 작품 덩어리 전체를 가운데 정렬 */
+  gap: 2rem;
+  padding: 4rem 0;
+}
+
+/* 각 작품 박스: 가로 레이아웃, 가운데 정렬 */
+.artwork > div {
+  display: flex;
+  align-items: center;      /* 이미지와 캡션 수직 가운데 */
+  justify-content: center;  /* <-- 중요: 가로 중앙 정렬 */
+  gap: 1rem;
+  width: 100%;              /* 부모 가로폭을 채움 (중앙 정렬이 잘 작동함) */
+  max-width: 1200px;        /* 원하면 조절 */
+  padding: 10rem 1rem;
+
+}
+
+/* 이미지 크기: 고정 px 또는 % 조합으로 안정적 제어 */
+.artwork img {
+  max-width: 80%;      /* 데스크탑 기본 크기: 필요하면 줄이거나 늘리기 */
+      /* 너무 좁아지는 걸 방지 */
+
+  object-fit: cover;
+  display: block;
+}
+
+/* 캡션: 이미지 오른쪽에 자연스럽게 붙음 */
+.artwork .caption {
+  margin: 0;
+  background: none;
+  padding: 0;
+
+  text-align: left;
+}
+
+
+/* ======== 태블릿 (1200px 이하) ======== */
+@media (max-width: 1200px) {
+
+  .container {
+    grid-template-columns: 1fr;
+    padding: 2rem 3rem;
+  }
+
+  .artwork > div {
+    max-width: 900px;
+  }
+
+  .nav {
+    gap: 3rem; 
+  }
+
+  .navIcon {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ======== 모바일 (768px 이하) ======== */
+@media (max-width: 768px) {
+
+ header {/* 적당한 헤더 높이 + 네비와 아이콘이 모두 가운데 오도록 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+  .header-logo img {
+    width: 35%;
+  }
+
+.navBox {
+  position: absolute;
+  top: 20%;
+
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.caption {
+  font-size: 12px;
+}
+.nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100vh;
+  background: #fff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  padding: 6rem 2.5rem 0 2rem;
+  gap: 2.2rem;
+
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 999;
+}
+
+.navBox.open .nav {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+
+  /* 메뉴 글씨 스타일 */
+  .nav a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-style: normal;
+    color: #1b1b1b;
+    text-decoration: none;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+/* ---- 아이콘 ---- */
+.navIcon {
+  width: 35px;
+  height: 35px;
+  background-color: #F7EDF1;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 4px 5px rgba(0,0,0,0.2);
+
+  /* 핵심 트랜지션 */
+  transform-origin: center; /* ← 가운데 기준으로 줄어들게 */
+  transition:
+    width 0.4s cubic-bezier(0.22,1,0.36,1),
+    height 0.4s cubic-bezier(0.22,1,0.36,1),
+    border-radius 0.4s cubic-bezier(0.22,1,0.36,1),
+    box-shadow 0.3s ease-out;
+}
+
+/* 메뉴 열렸을 때: 원 → 막대 */
+.navBox.open .navIcon {
+  width: 30px;    /* 이 값을 줄이면 더 슬림한 막대 */
+  height: 4px;
+  background-color: #D9D9D9;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
+  .navIconBox {
+    display: flex;
+    justify-content: flex-end;
+        z-index: 1000;
+    
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 순서 바꾸기: 작품 먼저 나오게 */
+  .artwork_main {
+    order: 1;
+  }
+
+  .text-section {
+    order: 2;
+  }
+  .container {
+    padding: 3rem;
+  }
+
+  .text-section {
+    padding: 0;
+  }
+
+  .artwork_main img {
+    width: 100%;
+  }
+  .artwork > div {
+    flex-direction: column;
+    text-align: left;  /* 캡션도 왼쪽 정렬 */
+    padding: 2rem 0;
+  }
+
+  .artwork img {
+    width: 90%;
+  }
+
+  .artwork .caption {
+    width: 90%;         /* 이미지와 동일한 너비 */
+    margin-left: 0;     /* 부모 여백에 맞춤 */
+    padding-left: 0;    /* 필요 시 */
+  }
+
+
+}
+
+/* ======== 소형 모바일 (480px 이하) ======== */
+@media (max-width: 480px) {
+  .nav {
+    gap: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .navIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .text-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .artwork img {
+    width: 100%;
+  }
+}
+
+
+  
+
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-logo">
+    <img src="img/logo_099.png" alt="logo">
+  </div>
+
+  <div class="navBox">
+  
+    <nav class="nav">
+      <a>introduction</a>
+      <a>exhibition</a>
+      <a>artists</a>
+      <a>works</a>
+      <a>guest book</a>
+    </nav>
+    <div class="navIconBox">
+          <div class="navIcon"  id="menuToggle">
+          </div>
+    </div>
+  </div>
+
+</header>
+
+  <!-- 상단 장식 -->
+
+  <!-- 본문 -->
+  <main class="container">
+    <!-- 좌측 텍스트 -->
+    <section class="text-section">
+      <h1>김 민 경</h1>
+      <h2>Kim Min Kyeong</h2>
+      <div class="note">
+        <p><strong>작가 노트</strong></p>
+        <p>
+          
+ 지금도 지나가고 있는 이 현재라는 순간은 끊임없이 쌓이고 중첩된다. <br>
+나의 작업은 이러한 흐름 속에서 잊히지 않고 남아 있는 흔적을 되짚는 일이다. 
+ 이는 과거의 나를 현재의 내가 바라보며 지나간 기억을 조명하고, 과거와 현재를 연결 짓고자 한다. <br><br>
+ 나에게 기억은 한정적이고 불확실하지만,
+  변하지 않고 남아 있는 사진은 그 흐릿함 속 단서가 되어준다. 사진이 포착한 단편적인 순간을 바탕으로,
+   나는 그 너머의 상황과 심상을 상상하여 기억을 재구성한다. 나는 이 재구성 과정을 시각적으로 풀어내는 데 집중하며, 
+   과거의 순간들을 새롭게 조명해 내재된 감정과 경험을 드러낸다. <br><br>
+ 사라지거나 낡아버린 익숙한 장소들이 사진과 기억 속에서는 생기를 띄고 있음을 상기하면, 설명하기 어려운 그리움을 불러일으킨다. 
+ 나는 이런 박제된 사진 속 장소와 흐릿하게 뒤섞인 기억 사이의 간극에서 느껴지는 감정을 회화로 옮기고자 했다.
+      </div>
+
+      <div class="contact">
+        <h3>Contact</h3>
+        <p><strong>E-mail</strong> &nbsp;&nbsp; lucykim0629@naver.com
+</p>
+        <p><strong>Instagram</strong> &nbsp;&nbsp; @min_km00n</p>
+      </div>
+    </section>
+
+    <!-- 메인 작품 -->
+    <section class="artwork_main">
+      <img src="work/kimminkyeong_main.jpg" alt="대표 작품">
+      <div class="caption">운동장<br>2024, Oil on cavas<br>116.8 x 80.3cm</div>
+    </section>
+  </main>
+
+  <section class="artwork">
+  <div class="artwork1">
+      <img src="work/kimminkyeong_1.jpg" width="60%" alt="">
+      <div class="caption">학교 언덕<br>2025, oil on canvas<br>145.5 x 97.0cm</div>
+  </div>
+  <div class="artwork2">
+      <img src="work/kimminkyeong_2.jpg" width="50%" alt="">
+      <div class="caption">옥상 계단<br>2025, oil on canvas<br>90.9x72.7cm</div>
+  </div>
+    <div class="artwork3">
+      <img src="work/kimminkyeong_icon.jpg" width="50%" alt="">
+      <div class="caption">제목<br>2025, oil on canvas<br>112 X 112cm</div>
+  </div>
+    <div class="artwork4">
+      <img src="work/kimminkyeong_4.jpg" width="70%" alt="">
+      <div class="caption">학교 언덕<br>2025, oil on canvas<br>145.5 x 97.0cm</div>
+  </div>
+  <div class="artwork5">
+      <img src="work/kimminkyeong_5.jpg" width="60%"alt="">
+      <div class="caption">옥상 계단<br>2025, oil on canvas<br>90.9x72.7cm</div>
+  </div>
+    <div class="artwork6">
+      <img src="work/kimminkyeong_6.jpg" width="70%" alt="">
+      <div class="caption">제목<br>2025, oil on canvas<br>112 X 112cm</div>
+  </div>
+</section>
+<footer>
+  <img src="img/footer.png" width="100%" alt="">
+</footer>
+</body>
+
+<script>
+  const navBox = document.querySelector('.navBox');
+  const menuToggle = document.getElementById('menuToggle');
+
+  menuToggle.addEventListener('click', () => {
+    navBox.classList.toggle('open');
+  });
+</script>
+
+</html>
