@@ -1,538 +1,421 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artist Page</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fff;
-      color: #222;
-      line-height: 1.6;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scaled Layout</title>
 
-    
-  /* 헤더 시작*/   
-    header {
-      width: 100%;
-      display: flex;           /* 가로 정렬 */
-      align-items: center;     /* 수직 가운데 */
-      justify-content: space-between;  /* 좌우 균형 */
-    }
-
-    /* 로고+아이콘 그룹 */
-    .header-logo {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    header img {
-      width: 70%; /* 원하는 크기로 조절 */
-      height: auto;
-    }
-/* 헤더 로고 영역 끝 */
-
-
-/* 네비게이션바 시작 */
-
-  /* --- 네비 박스 컨테이너 --- */
-/* --- 네비 박스 컨테이너 --- */
-.navBox {
-  width: 100%;                  /* 전체 너비로 */
-  display: flex;
-  justify-content: flex-end;     /* 아이콘을 오른쪽 끝으로 */
-  align-items: center;
-  position: relative;
-  padding: 1%;
-
-  overflow: hidden;
-  z-index: 1;
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
 }
 
-.nav {
-  position: absolute;
-  top: 50%;
-  right: 150px;
-  display: flex;
-  gap: 10rem;
-  background-color: #fff;
-  justify-content: center;
-  align-items: center;
-
-  transform: translateY(-50%) translateX(50px); /* 오른쪽에서 살짝 밀린 상태 */
-  opacity: 0;
-  transform-origin: right center;
-  z-index: 1;
-
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease-in-out;
-}
-
-/* --- 메뉴 열렸을 때 --- */
-.navBox.open .nav {
-  transform: translateY(-50%) translateX(0); /* 아이콘 바로 옆으로 이동 */
-  opacity: 1;
-}
-
-/* --- 아이콘 위로 올라가지 않게 --- */
-.navIconBox {
-  display: flex;
-  align-items: center;
-  z-index: 2;                     /* 메뉴보다 위 */
-  margin-right: 2rem; 
-
-}
-
-/* 기본 동그라미 */
-.navIcon {
-  width: 35px;
-  height: 35px;
-  background-color: #F7EDF1; /* 분홍색 */
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
-  box-shadow: 0px 4px 5px rgba(0,0,0,0.2);
-}
-
-/* 메뉴 열렸을 때: 세로로 압축 → 회색 막대 */
-.navBox.open .navIcon {
-  width: 34px;          /* 가로는 그대로 */
-  height: 4px;          /* 세로가 쭉 줄어들며 막대 */   /* 모서리 둥글게 */
-  background: #D9D9D9;
-  box-shadow: none;
-}
-
-
-/* --- 메뉴 아이템 초기 상태 --- */
-.nav a {
-  font-family: sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  font-style: italic;
-  color: black;
-  text-decoration: none;
-  text-align: center;
-  opacity: 0;
-  transform: translateX(20px); /* 오른쪽에서 살짝 */
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-/* --- 메뉴 아이템 열릴 때 순차 등장 --- */
-.navBox.open .nav a:nth-child(1) { transition-delay: 0.05s; opacity:1; transform:translateX(0);}
-.navBox.open .nav a:nth-child(2) { transition-delay: 0.10s; opacity:1; transform:translateX(0);}
-.navBox.open .nav a:nth-child(3) { transition-delay: 0.15s; opacity:1; transform:translateX(0);}
-.navBox.open .nav a:nth-child(4) { transition-delay: 0.20s; opacity:1; transform:translateX(0);}
-.navBox.open .nav a:nth-child(5) { transition-delay: 0.25s; opacity:1; transform:translateX(0);}
-
-
-  
-    /* 작품 구역 시작 */
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      padding: 4rem 10rem;   /* ← 양 옆 여백 넓힐 곳 */
-      margin: 0 auto;       /* ← 가운데 정렬 */
-
-    }
-
-    .text-section {
-      padding : 0 4rem 0 0;
-    }
-
-    /* ===== 좌측 텍스트 영역 ===== */
-    .text-section h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-
-    .text-section h2 {
-      font-size: 1.1rem;
-      color: #666;
-      margin: 0 0 1rem;
-      font-weight: normal;
-    }
-
-    .text-section .note {
-      margin-bottom: 2rem;
-      font-size: 0.95rem;
-      color: #444;
-    }
-
-    .contact h3 {
-      font-size: 1.2rem;
-      margin: 1.5rem 0 0.5rem;
-    }
-
-    .contact p {
-      margin: 0.3rem 0;
-      font-size: 0.9rem;
-    }
-
-    /* ===== 우측 작품 영역 ===== */
-    .artwork_main {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-
-    .artwork_main img {
-      width: 100%;
-
-    }
-
-    .caption {
-       margin: 0;
-       font-size: 0.8rem;
-       background: none;
-       padding: 0;
-       align-self: flex-end;
-    }
-
-    .artwork_main .caption {
-      text-align: right;
-    }
-
-
-/* ---------- 작품 리스트 (수정본) ---------- */
-.artwork {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 작품 덩어리 전체를 가운데 정렬 */
-  gap: 2rem;
-  padding: 4rem 0;
-}
-
-/* 각 작품 박스: 가로 레이아웃, 가운데 정렬 */
-.artwork > div {
-  display: flex;
-  align-items: center;      /* 이미지와 캡션 수직 가운데 */
-  justify-content: center;  /* <-- 중요: 가로 중앙 정렬 */
-  gap: 1rem;
-  width: 100%;              /* 부모 가로폭을 채움 (중앙 정렬이 잘 작동함) */
-  max-width: 1200px;        /* 원하면 조절 */
-  padding: 10rem 1rem;
-
-}
-
-/* 이미지 크기: 고정 px 또는 % 조합으로 안정적 제어 */
-.artwork img {
-  max-width: 80%;      /* 데스크탑 기본 크기: 필요하면 줄이거나 늘리기 */
-      /* 너무 좁아지는 걸 방지 */
-
-  object-fit: cover;
-  display: block;
-}
-
-/* 캡션: 이미지 오른쪽에 자연스럽게 붙음 */
-.artwork .caption {
-  margin: 0;
-  background: none;
-  padding: 0;
-
-  text-align: left;
-}
-
-
-/* ======== 태블릿 (1200px 이하) ======== */
-@media (max-width: 1200px) {
-
-  .container {
-    grid-template-columns: 1fr;
-    padding: 2rem 3rem;
-  }
-
-  .artwork > div {
-    max-width: 900px;
-  }
-
-  .nav {
-    gap: 3rem; 
-  }
-
-  .navIcon {
-    width: 42px;
-    height: 42px;
-  }
-}
-
-/* ======== 모바일 (768px 이하) ======== */
-@media (max-width: 768px) {
-
- header {/* 적당한 헤더 높이 + 네비와 아이콘이 모두 가운데 오도록 */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-  .header-logo img {
-    width: 35%;
-  }
-
-.navBox {
-  position: absolute;
-  top: 20%;
-
-  display: flex;
-  align-items: center;
-  z-index: 10;
-}
-
-.caption {
-  font-size: 12px;
-}
-.nav {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 40%;
-  height: 100vh;
-  background: #fff;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  padding: 6rem 2.5rem 0 2rem;
-  gap: 2.2rem;
-
-  transform: translateX(100%);
-  opacity: 0;
-  transition: transform 0.7s cubic-bezier(0.77, 0, 0.175, 1),
-              opacity 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-  z-index: 999;
-}
-
-.navBox.open .nav {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-
-  /* 메뉴 글씨 스타일 */
-  .nav a {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    font-style: normal;
-    color: #1b1b1b;
-    text-decoration: none;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-/* ---- 아이콘 ---- */
-.navIcon {
-  width: 35px;
-  height: 35px;
-  background-color: #F7EDF1;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0px 4px 5px rgba(0,0,0,0.2);
-
-  /* 핵심 트랜지션 */
-  transform-origin: center; /* ← 가운데 기준으로 줄어들게 */
-  transition:
-    width 0.4s cubic-bezier(0.22,1,0.36,1),
-    height 0.4s cubic-bezier(0.22,1,0.36,1),
-    border-radius 0.4s cubic-bezier(0.22,1,0.36,1),
-    box-shadow 0.3s ease-out;
-}
-
-/* 메뉴 열렸을 때: 원 → 막대 */
-.navBox.open .navIcon {
-  width: 30px;    /* 이 값을 줄이면 더 슬림한 막대 */
-  height: 4px;
-  background-color: #D9D9D9;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-
-  .navIconBox {
-    display: flex;
-    justify-content: flex-end;
-        z-index: 1000;
-    
-  }
-
-  .container {
+/* 헤더는 기존 그대로 */
+.header {
+    width: 100%;
+    height: 190px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+
+.logoBox {
+    width: 100%;
+    height: 100px; 
+    display: flex;
+    align-items: center;
+    padding-top: 35px;
+    padding-left: 46px;
+}
+
+.logoBox img {
+ width:135px;
+}
+.navBox {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav { display: flex; gap: 250px; }
+.nav a { font-family: sans-serif; font-size: 18px; font-weight: 700; font-style: italic; text-decoration: none; color: black; }
+
+/* ✅ 핵심: 원본 캔버스 */
+.work-area {
+    position: relative;
+    width: 1440px;   /* 원본 기준 width */
+    height: 900px;   /* 필요시 조정 가능 */
+}
+
+/* ✅ scale 적용되는 래퍼 */
+.work-scale {
+    position: relative;
+    transform-origin: top left;
+}
+
+/* 공통 박스 스타일 */
+.work-box {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 좌표, 크기 그대로 유지 */
+.w1 { width: 147px; height: 198px; left: 100px; top: 81px; }
+.w2 { width: 178px; height: 126px; left: 438px; top: 92px; }
+.w3 { width: 148px; height: 201px; left: 48px; top: 290px; }
+.w4 { width: 148px; height: 148px; left: 247px; top: 286px; }
+.w5 { width: 172px; height: 137px; left: 415px; top: 238px; }
+.w6 { width: 149px; height: 202px; left: 108px; top: 540px; }
+
+
+.w7 { width: 148px; height: 201px; left: 280px; top: 500px; }
+.w8 { width: 201px; height: 148px; left: 463px; top: 423px; }
+
+.w9 { width: 193px; height: 158px; left: 610px; top: 250px; }
+
+.w10 { width: 160px; height: 171px; left: 748px; top: 423px; }
+
+.w11 { width: 201px; height: 148px; left: 487px; top: 590px; }
+
+.w12 { width: 155px; height: 174px; left: 746px; top: 611px; }
+
+
+.w13 { width: 181px; height: 118px; left: 849px; top: 155px; }
+
+.w14 { width: 198px; height: 133px; left: 1118px; top: 45px; }
+
+.w15 { width: 148px; height: 202px; left: 1468px; top: 65px; }
+
+.w16 { width: 127px; height: 168px; left: 930px; top: 300px; }
+
+.w17 { width: 202px; height: 149px; left: 1060px; top: 235px; }
+
+.w18 { width: 138px; height: 183px; left: 1291px; top: 204px; }
+
+.w19 { width: 153px; height: 144px; left: 1517px; top: 315px; }
+
+.w20 { width: 149px; height: 202px; left: 935px; top: 543px; }
+
+.w21 { width: 134px; height: 179px; left: 1101px; top: 393px; }
+
+.w22 { width: 148px; height: 200px; left: 1322px; top: 410px; }
+
+.w23 { width: 193px; height: 127px; left: 1505px; top: 489px; }
+
+.w24 { width: 149px; height: 201px; left: 1143px; top: 590px; }
+
+.w25 { width: 201px; height: 148px; left: 1315px; top: 645px; }
+
+.w26 { width: 149px; height: 200px; left: 1718px; top: 292px; }
+
+
+/* 기본 데스크탑 유지 (현재 스타일 그대로) */
+
+/* --- 1400px 이하일 때 --- */
+@media (max-width: 1400px) {
+  .nav {
+    gap: 120px;
+  }
+  .nav a {
+    font-size: 16px;
+  }
+  .logoBox img {
+    width: 110px;
+  }
+  .header {
+    height: 160px;
+  }
+}
+
+/* --- 1024px 이하 (노트북 사이즈) --- */
+@media (max-width: 1024px) {
+  .nav {
+    gap: 60px;
+  }
+  .nav a {
+    font-size: 15px;
+  }
+  .logoBox {
+    padding-left: 20px;
+    padding-top: 25px;
+  }
+  .header {
+    height: 150px;
+  }
+}
+
+/* --- 768px 이하 (태블릿) --- */
+@media (max-width: 768px) {
+  .header {
+    height: 5%;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
-  /* 순서 바꾸기: 작품 먼저 나오게 */
-  .artwork_main {
-    order: 1;
-  }
-
-  .text-section {
-    order: 2;
-  }
-  .container {
-    padding: 3rem;
-  }
-
-  .text-section {
+  .logoBox {
+  
+    justify-content: center;
     padding: 0;
   }
 
-  .artwork_main img {
-    width: 100%;
-  }
-  .artwork > div {
-    flex-direction: column;
-    text-align: left;  /* 캡션도 왼쪽 정렬 */
-    padding: 2rem 0;
+  .navBox {
+    margin-top: 10px;
   }
 
-  .artwork img {
-    width: 90%;
+  .nav {
+    gap: 25px;
   }
 
-  .artwork .caption {
-    width: 90%;         /* 이미지와 동일한 너비 */
-    margin-left: 0;     /* 부모 여백에 맞춤 */
-    padding-left: 0;    /* 필요 시 */
+  .nav a {
+    font-size: 14px;
   }
-
-
 }
 
-/* ======== 소형 모바일 (480px 이하) ======== */
+/* --- 480px 이하 (모바일) --- */
 @media (max-width: 480px) {
   .nav {
-    gap: 1rem;
-    font-size: 0.75rem;
+    flex-wrap: wrap;
+    gap: 15px 25px;
+    justify-content: center;
   }
 
-  .navIcon {
-    width: 34px;
-    height: 34px;
+  .nav a {
+    font-size: 13px;
+    font-weight: 600;
   }
 
-  .text-section h1 {
-    font-size: 1.8rem;
+  .logoBox img  {
+    width: 10%;
   }
 
-  .artwork img {
-    width: 100%;
+  .w1 { width: 62px; height: 77px; left: 49px; top: 32px; }
+  .w1 img {width: 62px;}
+
+.w2 { width: 82px; height: 63px; left: 252px; top: 78px; }
+  .w2 img {width: 82px;}
+
+.w3 { width: 69px; height: 93px; left: 135px; top: 110px; }
+  .w3 img {width: 69px;}
+
+.w4 { width: 76px; height: 76px; left: 295px; top: 166px; }
+.w4 img{ width: 76px;}
+
+.w5 { width: 89px; height: 70px; left: 43px; top: 137px;  }
+  .w5 img {width: 89px;}
+
+.w6 { width: 74px; height: 81px; left: 215px; top: 144px; }
+.w6 img { width: 74px;}
+
+.w7 { width: 69px; height: 83px; left: 122px; top: 215px; }
+.w7 img { width: 69px;}
+
+.w8 { width: 96px; height: 64px; left: 255px; top: 328px; }
+.w8 img { width: 96px;}
+
+.w9 { width: 93px; height: 68px; left: 111px; top: 598px; }
+.w9 img { width: 93px; }
+
+.w10 { width: 74px; height: 74px; left: 35px; top: 219px; }
+.w10 img { width: 74px}
+
+.w11 { width: 96px; height: 73px; left: 98px; top: 682px; }
+.w11 img { width: 96px;}
+
+.w12 { width: 77px; height: 94px; left: 58px; top: 307px; }
+.w12 img { width: 77px; }
+
+.w13 { width: 105px; height: 53px; left: 141px; top: 44px; }
+.w13 img {width: 105px;}
+
+.w14 { width: 140px; height: 57px; left: 215px; top: 256px; }
+  .w14 img {width: 140px;}
+
+.w15 { width: 72px; height: 86px; left: 156px; top: 320px; }
+.w15 img { width: 72px;}
+
+.w16 { width: 65px; height: 104px; left: 41px; top: 582px; }
+.w16 img { width: 65px; }
+
+.w17 { width: 84px; height: 61px; left: 84px; top: 520px; }
+.w17 img{ width: 84px;}
+
+.w18 { width: 76px; height: 95px; left: 208px; top: 610px; }
+.w18 img { width: 76px;}
+.w19 { width: 78px; height: 78px; left: 113px; top: 430px; }
+.w19 img { width: 78px;}
+
+.w20 { width: 72px; height: 94px; left: 195px; top: 492px; }
+.w20 img { width: 72px;}
+
+.w21 { width: 72px; height: 86px; left: 282px; top: 515px; }
+.w21 img { width: 72px;}
+
+.w22 { width: 70px; height: 104px; left: 39px; top: 411px; }
+.w22 img { width: 70px; }
+
+.w23 { width: 89px; height: 54px; left: 198px; top: 420px; }
+.w23 img { width: 89px;}
+
+.w24 { width: 75px; height: 75px; left: 298px; top: 430px; }
+.w24 img { width: 75px; }
+.w25 { width: 201px; height: 148px; left: 1361px; top: 645px; }
+
+.w26 { width: 67px; height: 98px; left: 295px; top: 625px; }
+.w26 img { width: 67px;}
+}
+
+</style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logoBox"><img src="img/logo_099.png" ></div>
+    <div class="navBox"><nav class="nav"><a>introduction</a><a>exhibition</a><a>artists</a><a>works</a><a>guest book</a></nav></div>
+</header>
+
+<!-- ✅ 화면에 맞춰 줄어드는 영역 -->
+<div class="work-area">
+  <div class="work-scale">
+     <!-- 윤단비 -->
+    <div class="work-box w1" data-group="fh"><a href="leechaeyeon.html"><img src="work/leechaeyeon_icon.jpg" width="135px" alt=""></a></div>
+     <!-- 김민경 -->
+    <div class="work-box w2"  data-group="pw"><a href="leeyewon.html"><img src="work/leeyewon_icon.jpg" width="182px"></a></div>
+    
+    <div class="work-box w3"  data-group="ph"><a href="yoonkyungsue.html"><img src="work/yoonkyungsue_icon.jpg" width="145px"></a></div>
+    
+    <div class="work-box w4" data-group="s"><a href="chayeeun.html"><img src="work/chayeeun_icon.jpg" width="155px"></a></div>
+    
+    <div class="work-box w5"  data-group="fw"><a href="parkinseo.html"><img src="work/parkinseo_icon.jpg" width="170px"></a></div>
+    
+    <div class="work-box w6"  data-group="s"><a href="baejeongyeon.html"><img src="work/baejeongyeon_icon.jpg" width="160px"></a></div>
+    
+    <div class="work-box w7" data-group="fh" ><a href="umseohyeon.html"><img src="work/umseohyeon_icon.jpg" width="136px"></a></div>
+   
+    <div class="work-box w8" data-group="pw"><a href="yangsuyoung.html"><img src="work/yangsuyoung_icon.jpg" width="195px"></a></div>
+  
+    <div class="work-box w9"  data-group="fw"><a href="leejilly.html"><img src="work/leejilly_icon.jpg" width="195px"></a></div>
+  
+    <div class="work-box w10" data-group="s"><a href="parkchaebin.html"><img src="work/parkchaebin_icon.jpg" width="160px"></a></div>
+  
+    <div class="work-box w11"  data-group="fw"><a href="choimina.html"><img src="work/choimina_icon.jpg" width="190px"></a></div>
+  
+    <div class="work-box w12" data-group="fh"><a href="yoondanbi.html"><img src="work/yoondanbi_icon.jpg" width="135px"></a></div>
+  
+    <div class="work-box w13"  data-group="mw"><a href="chaseoyeon.html"><img src="work/chaseoyeon_icon.jpg" width="182px"></a></div>
+  
+    <div class="work-box w14"  ><a href="/jangyehrim.html"><img src="work/jangyehrim_icon.jpg" width="270px"></a></div>
+  
+    <div class="work-box w15" data-group="fh"><a href="yundayoung.html"><img src="work/yundayoung_icon.jpg" width="150px" alt=""></a></div>
+  
+    <div class="work-box w16"  data-group="ph"><a href="kimjueun.html"><img src="work/kimjueun_icon.jpg" width="132px"></a></div>
+  
+    <div class="work-box w17" data-group="pw"><a href="kimminkyeong.html"><img src="work/kimminkyeong_icon.jpg" width="184px"></a></div>
+  
+    <div class="work-box w18" data-group="fh"><a href="keumdoyeon.html"><img src="work/keumdoyeon_icon.jpg" width="150px" alt=""></a></div>
+  
+    <div class="work-box w19" data-group="s"><a href="wuijubin.html"><img src="work/wuijubin_icon.jpg" width="148px"></a></div>
+  
+    <div class="work-box w20"  data-group="ph" ><a href="leeseohui.html"><img src="work/leeseohui_icon.jpg" width="140px"></a></div>
+  
+    <div class="work-box w21" data-group="fh"><a href="parkmunhyeon.html"><img src="work/parkmunhyeon_icon.jpg" width="135px" alt=""></a></div>
+  
+    <div class="work-box w22"  data-group="ph"><a href="kimjingyeong.html"><img src="work/kimjingyeong_icon.jpg" width="145px"></a></div>
+  
+    <div class="work-box w23" data-group="pw"><a href="choiheesu.html"><img src="work/choiheesu_icon.jpg" width="185px"></a></div>
+  
+    <div class="work-box w24"  data-group="s"><a href="jeongyoonseo.html"><img src="work/jeongyoonseo_icon.jpg" width="152px"></a></div>
+  
+    <div class="work-box w25"  data-group="fh"><a href="choseungmi.html"><img src="work/choseungmi_icon.jpg" width="129px"></a></div>
+  
+    <div class="work-box w26"  data-group="ph"><a href="choidaun.html"><img src="work/choidaun_icon.jpg" width="145px"></a></div>
+
+  </div>
+</div>
+
+<script>
+function scaleWork() {
+  const designWidth = 1920;
+  const currentWidth = window.innerWidth;
+  const scale = currentWidth / designWidth;
+
+  document.querySelector('.work-scale').style.transform = `scale(${scale})`;
+}
+
+// 화면 크기가 480px보다 클 때만 실행하는 함수
+function checkAndScale() {
+  if (window.innerWidth > 480) {
+    scaleWork();
+  } else {
+    // 모바일일 때는 scale 제거 (안 하면 깨질 수도 있음)
+    document.querySelector('.work-scale').style.transform = '';
   }
 }
 
+window.addEventListener('resize', checkAndScale);
 
-  
-
-  </style>
-</head>
-<body>
-<header>
-  <div class="header-logo">
-    <img src="img/logo_099.png" alt="logo">
-  </div>
-
-  <div class="navBox">
-  
-    <nav class="nav">
-      <a>introduction</a>
-      <a>exhibition</a>
-      <a>artists</a>
-      <a>works</a>
-      <a>guest book</a>
-    </nav>
-    <div class="navIconBox">
-          <div class="navIcon"  id="menuToggle">
-          </div>
-    </div>
-  </div>
-
-</header>
-
-  <!-- 상단 장식 -->
-
-  <!-- 본문 -->
-  <main class="container">
-    <!-- 좌측 텍스트 -->
-    <section class="text-section">
-      <h1>김 민 경</h1>
-      <h2>Kim Min Kyeong</h2>
-      <div class="note">
-        <p><strong>작가 노트</strong></p>
-        <p>
-          
- 지금도 지나가고 있는 이 현재라는 순간은 끊임없이 쌓이고 중첩된다. <br>
-나의 작업은 이러한 흐름 속에서 잊히지 않고 남아 있는 흔적을 되짚는 일이다. 
- 이는 과거의 나를 현재의 내가 바라보며 지나간 기억을 조명하고, 과거와 현재를 연결 짓고자 한다. <br><br>
- 나에게 기억은 한정적이고 불확실하지만,
-  변하지 않고 남아 있는 사진은 그 흐릿함 속 단서가 되어준다. 사진이 포착한 단편적인 순간을 바탕으로,
-   나는 그 너머의 상황과 심상을 상상하여 기억을 재구성한다. 나는 이 재구성 과정을 시각적으로 풀어내는 데 집중하며, 
-   과거의 순간들을 새롭게 조명해 내재된 감정과 경험을 드러낸다. <br><br>
- 사라지거나 낡아버린 익숙한 장소들이 사진과 기억 속에서는 생기를 띄고 있음을 상기하면, 설명하기 어려운 그리움을 불러일으킨다. 
- 나는 이런 박제된 사진 속 장소와 흐릿하게 뒤섞인 기억 사이의 간극에서 느껴지는 감정을 회화로 옮기고자 했다.
-      </div>
-
-      <div class="contact">
-        <h3>Contact</h3>
-        <p><strong>E-mail</strong> &nbsp;&nbsp; lucykim0629@naver.com
-</p>
-        <p><strong>Instagram</strong> &nbsp;&nbsp; @min_km00n</p>
-      </div>
-    </section>
-
-    <!-- 메인 작품 -->
-    <section class="artwork_main">
-      <img src="work/kimminkyeong_main.jpg" alt="대표 작품">
-      <div class="caption">운동장<br>2024, Oil on cavas<br>116.8 x 80.3cm</div>
-    </section>
-  </main>
-
-  <section class="artwork">
-  <div class="artwork1">
-      <img src="work/kimminkyeong_1.jpg" width="60%" alt="">
-      <div class="caption">학교 언덕<br>2025, oil on canvas<br>145.5 x 97.0cm</div>
-  </div>
-  <div class="artwork2">
-      <img src="work/kimminkyeong_2.jpg" width="50%" alt="">
-      <div class="caption">옥상 계단<br>2025, oil on canvas<br>90.9x72.7cm</div>
-  </div>
-    <div class="artwork3">
-      <img src="work/kimminkyeong_icon.jpg" width="50%" alt="">
-      <div class="caption">제목<br>2025, oil on canvas<br>112 X 112cm</div>
-  </div>
-    <div class="artwork4">
-      <img src="work/kimminkyeong_4.jpg" width="70%" alt="">
-      <div class="caption">학교 언덕<br>2025, oil on canvas<br>145.5 x 97.0cm</div>
-  </div>
-  <div class="artwork5">
-      <img src="work/kimminkyeong_5.jpg" width="60%"alt="">
-      <div class="caption">옥상 계단<br>2025, oil on canvas<br>90.9x72.7cm</div>
-  </div>
-    <div class="artwork6">
-      <img src="work/kimminkyeong_6.jpg" width="70%" alt="">
-      <div class="caption">제목<br>2025, oil on canvas<br>112 X 112cm</div>
-  </div>
-</section>
-<footer>
-  <img src="img/footer.png" width="100%" alt="">
-</footer>
-</body>
-
-<script>
-  const navBox = document.querySelector('.navBox');
-  const menuToggle = document.getElementById('menuToggle');
-
-  menuToggle.addEventListener('click', () => {
-    navBox.classList.toggle('open');
-  });
+// 최초 실행
+checkAndScale();
 </script>
 
+
+
+<script>
+// Fisher-Yates Shuffle 함수
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function randomizeImages() {
+    const groups = ["fh","fw","ph","pw","mw","s"]; // 섞을 그룹
+
+    groups.forEach(group => {
+        const boxes = Array.from(document.querySelectorAll(`[data-group="${group}"]`));
+        if (boxes.length <= 1) return;
+
+        // 이미지와 링크를 같이 모음
+        const items = boxes.map(box => {
+            const img = box.querySelector("img");
+            const a = box.querySelector("a");
+            return {
+                src: img.src,
+                href: a.href
+            };
+        });
+
+        // 섞기
+        const shuffled = shuffle(items);
+
+        // 박스 위치 그대로, 이미지와 링크만 바꿈
+        boxes.forEach((box, idx) => {
+            const img = box.querySelector("img");
+            const a = box.querySelector("a");
+            img.src = shuffled[idx].src;
+            a.href = shuffled[idx].href;
+        });
+    });
+}
+
+// 실행
+
+randomizeImages();
+
+
+</script>
+
+
+</body>
 </html>
